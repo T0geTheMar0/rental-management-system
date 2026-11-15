@@ -25,7 +25,7 @@ The build passes: pages not built yet are placeholders ("Coming soon"). See `TOD
 
 - [x] Browse (`BrowsePage` from PR #2, `BrowseService`, Trie location suggestions)
 - [x] Property detail + booking (`BookDialog`: carousel, price card, confirm, "Payment received"). Nov 15: no Close button (Esc and the window's X close it); price card fills its column so it lines up with Reserve; the dialog is smaller (columns 400 + 320, carousel 165, Unit beside its field, special requests as one line with a placeholder); it is only as tall as its content: picking dates adds the price lines and the dialog grows to fit, then centres itself again (and shrinks back if the dates are cleared)
-- [ ] Booking history (`BookingHistoryPage`, placeholder)
+- [x] Booking history (`BookingHistoryPage`, `RenterBookingDialog`): 4 stats (Coming up, Nights stayed, Total spent = paid minus refunded, Refunds pending), All/Pending/Upcoming/Staying/Completed/Cancelled tabs with counts (tabs are a Strategy enum), search by property, unit or location, or a booking reference (binary search, ignores the tab, as on the owner's Bookings), newest check-in first, 10 a page with `Pager`. The Total column's second line says Paid <date>, Refunded <amount>, Refund in review, Refund declined or No refund. A row opens `RenterBookingDialog`: banner with status and refund, stay strip, payment summary, View receipt, Refund receipt (processed refunds, via `BookingService.refundProcessedAt`), Message host; Cancel booking (pending/upcoming) opens the Cancellations page with that booking selected, so the refund tier and reason are handled there; Confirm check-out (staying/check-out due) as a confirm page. Messages' "View stay" now opens the same dialog without Message host.
 - [x] Damage reports (`RenterDamagePage`, `PayDamageDialog`): to pay / overdue / paid totals, All/To pay/Paid/Dismissed tabs, unpaid first (soonest due on top), pay dialog with a confirm page and "Payment received" with the receipt, Message host. A dot on the menu item while anything is unpaid. Overdue reports show the "Booking is paused" banner here and on Browse.
 - [x] Cancellations (`CancellationsPage`, from PR #2; not reviewed yet). Fixed: the "I understand" tick disappeared after clicking and moving the mouse away (focused checkboxes now stay filled, `Theme`); the reservation field's text is centred vertically; the footer says "Cancelled automatically" (was "Step 1 of 1")
 
@@ -35,7 +35,6 @@ The build passes: pages not built yet are placeholders ("Coming soon"). See `TOD
 
 ## Broken or missing
 
-- Renters have no "Message host" button on bookings yet (Booking history isn't built); they can start a conversation from the Messages search instead.
 - Messages' "Cancel stay" opens `CancellationsPage`, which is still a placeholder.
 
 ## Decisions made without asking
@@ -51,7 +50,7 @@ The build passes: pages not built yet are placeholders ("Coming soon"). See `TOD
 - Picked photos are copied into `uploads/properties/` only when the property is saved, under a new random name.
 - Buttons, not links, are used for actions inside clickable cards, so clicking them doesn't also open the card.
 - Inventory: items shared by the whole property (no unit) appear under a "Shared (whole property)" choice in the unit dropdown, only when some exist. Quantity saves on each +/− click; items needing attention are listed first with a tinted row.
-- Bookings: typing a booking reference (e.g. "GN-2026-8815" or "8815") finds it by binary search over the id-sorted list (SortedSearch) and ignores the selected tab; other text filters by renter, property or unit. Rejected and expired bookings are under the Cancelled tab. Tables use a new `RowTableModel` and are sized to their rows so only the page scrolls.
+- Bookings: typing a booking reference (e.g. "GN-2026-8815" or "8815") finds it by binary search over the id-sorted list (SortedSearch) and ignores the selected tab; a partial reference while typing (e.g. "GN-2026-88" or "88") lists every booking whose reference contains it (Nov 15; before, the table went empty until the last digit, also on Booking history); other text filters by renter, property or unit. Rejected and expired bookings are under the Cancelled tab. Tables use a new `RowTableModel` and are sized to their rows so only the page scrolls.
 - Payments: the Stitch screenshot only partly rendered, so the layout follows the other list pages: 4 stats (Received, Refunded, Net received, Refunds to review), type tabs, table. A row opens its receipt; a "Requested" refund opens the refund review instead. The property filter matches by property name (payment rows carry no property id).
 - Placeholder pages were added for every missing page so the app compiles and runs; they show only a header and "Coming soon".
 - Markdown docs live in `docs/` (README.md stays in the root). Skill files under `.claude/skills/` were left in place because Claude Code loads them from there.
