@@ -52,7 +52,7 @@ public class AuthScreen extends JPanel {
     }
 
     private JComponent artPanel() {
-        JPanel art = new JPanel(new MigLayout("insets 48 56 48 56, fill, gap 0, wrap 1", "[grow,fill]", "[][grow][]"));
+        JPanel art = new JPanel(new MigLayout("insets 48 56 48 56, fill, gap 0, wrap 1", "[grow,fill]", "[][][grow]"));
         art.setBackground(new java.awt.Color(0xF1EEF4));
         art.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Colors.BORDER));
 
